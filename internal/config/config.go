@@ -17,7 +17,7 @@ type Config struct {
 	OpenBrowser bool   `json:"open_browser"`
 	Mode        string `json:"mode"`
 
-	DBConfig
+	DBConfig `json:"db_config"`
 }
 
 type DBConfig struct {
@@ -31,65 +31,64 @@ type DBConfig struct {
 }
 
 func NewConfig(config *Config) *Config {
-	var conf *Config
 
-	if config == nil || config.SRV_PORT == "" {
-		conf = defaultConfig()
-	} else {
-		conf = config
+	local_conf := defaultConfig()
+
+	if config != nil || config.SRV_PORT != "" {
+		local_conf = config
 	}
 
 	SRV_PORT := os.Getenv("SRV_PORT")
 	if SRV_PORT != "" {
-		conf.SRV_PORT = SRV_PORT
+		local_conf.SRV_PORT = SRV_PORT
 	}
 
 	SRV_WEB_UI := os.Getenv("SRV_WEB_UI")
 	if SRV_WEB_UI != "" {
-		conf.WEB_UI, _ = strconv.ParseBool(SRV_WEB_UI)
+		local_conf.WEB_UI, _ = strconv.ParseBool(SRV_WEB_UI)
 	}
 
 	SRV_OPEN_BROWSER := os.Getenv("SRV_OPEN_BROWSER")
 	if SRV_OPEN_BROWSER != "" {
-		conf.OpenBrowser, _ = strconv.ParseBool(SRV_OPEN_BROWSER)
+		local_conf.OpenBrowser, _ = strconv.ParseBool(SRV_OPEN_BROWSER)
 	}
 
 	SRV_MODE := os.Getenv("SRV_MODE")
 	if SRV_MODE != "" {
-		conf.Mode = SRV_MODE
+		local_conf.Mode = SRV_MODE
 	}
 
 	SRV_DB_DRIVE := os.Getenv("SRV_DB_DRIVE")
 	if SRV_DB_DRIVE != "" {
-		conf.DB_DRIVE = SRV_DB_DRIVE
+		local_conf.DB_DRIVE = SRV_DB_DRIVE
 	}
 
 	SRV_DB_HOST := os.Getenv("SRV_DB_HOST")
 	if SRV_DB_HOST != "" {
-		conf.DB_HOST = SRV_DB_HOST
+		local_conf.DB_HOST = SRV_DB_HOST
 	}
 
 	SRV_DB_PORT := os.Getenv("SRV_DB_PORT")
 	if SRV_DB_PORT != "" {
-		conf.DB_PORT = SRV_DB_PORT
+		local_conf.DB_PORT = SRV_DB_PORT
 	}
 
 	SRV_DB_USER := os.Getenv("SRV_DB_USER")
 	if SRV_DB_USER != "" {
-		conf.DB_USER = SRV_DB_USER
+		local_conf.DB_USER = SRV_DB_USER
 	}
 
 	SRV_DB_PASS := os.Getenv("SRV_DB_PASS")
 	if SRV_DB_PASS != "" {
-		conf.DB_PASS = SRV_DB_PASS
+		local_conf.DB_PASS = SRV_DB_PASS
 	}
 
 	SRV_DB_NAME := os.Getenv("SRV_DB_NAME")
 	if SRV_DB_NAME != "" {
-		conf.DB_NAME = SRV_DB_NAME
+		local_conf.DB_NAME = SRV_DB_NAME
 	}
 
-	return conf
+	return local_conf
 }
 
 func defaultConfig() *Config {
